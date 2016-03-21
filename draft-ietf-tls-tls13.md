@@ -3489,7 +3489,7 @@ updating its sending cryptographic keys. This message can be sent by
 the server after sending its first flight and the client after sending
 its second flight. Implementations that receive a KeyUpdate message
 prior to receiving a Finished message as part of the 1-RTT handshake
-MUST generate a fatal "unexpected_message" alert.  After sending a
+MUST generate a fatal "unexpected_message" alert. After sending a
 KeyUpdate message, the sender SHALL send all its traffic using the
 next generation of keys, computed as described in
 {{updating-traffic-keys}}. Upon receiving a KeyUpdate, the receiver
@@ -3512,6 +3512,11 @@ the traffic keys (though not the traffic secret) for the previous
 generation of keys until it receives the KeyUpdate from the other
 side.
 
+Both sender and receiver must encrypt their KeyUpdate 
+messages with the old keys. Additionaly, both sides MUST enforce that 
+a KeyUpdate with the old key is received before accepting any messages
+encrypted with the new key. Failure to do so may allow message truncation
+attacks.
 
 #  Cryptographic Computations
 
